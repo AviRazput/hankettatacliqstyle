@@ -120,6 +120,8 @@ h6 {
 }
 
 .nav-link {
+  display: inline-flex;
+  align-items: center;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -127,6 +129,7 @@ h6 {
   color: var(--flat-text);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  line-height: 1;
   position: relative;
   transition: color 0.3s;
 }

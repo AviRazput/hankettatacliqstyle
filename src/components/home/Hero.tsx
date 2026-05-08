@@ -121,7 +121,7 @@ export function Hero() {
       {/* Mobile: full-bleed banner (hidden from md) */}
       <div
         className={[
-          "md:hidden relative mt-2 overflow-hidden",
+          "md:hidden relative mt-4 overflow-hidden",
           // Full-bleed: ignore the global max-width container on mobile
           "w-screen left-1/2 -translate-x-1/2",
           // Premium full look: tall + edge-to-edge, no blank bands
@@ -179,7 +179,7 @@ export function Hero() {
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 w-full min-w-0">
 
         {/* Desktop (md+): wide banner only — hidden below md */}
-        <div className="relative mt-3 md:mt-4 hidden md:block w-full overflow-hidden bg-flat-bg aspect-[16/5] max-h-[620px] min-h-[220px]">
+        <div className="relative mt-6 md:mt-7 hidden md:block w-full overflow-hidden bg-flat-bg aspect-[16/5] max-h-[620px] min-h-[220px]">
           <AnimatePresence initial={false} mode="popLayout">
             {slide && desktopSrc ? (
               <motion.div

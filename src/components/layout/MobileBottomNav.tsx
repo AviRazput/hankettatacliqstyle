@@ -20,19 +20,19 @@ function IconHome() {
   );
 }
 
-function IconGrid() {
-  return (
-    <svg className="w-5 h-5 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
-      <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
-    </svg>
-  );
-}
-
 function IconSearch() {
   return (
     <svg className="w-5 h-5 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3.5-3.5" />
+    </svg>
+  );
+}
+
+function IconGrid() {
+  return (
+    <svg className="w-5 h-5 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
+      <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
     </svg>
   );
 }
@@ -46,18 +46,21 @@ function IconUser() {
   );
 }
 
-type Item = {
-  href: string;
-  label: string;
-  icon: React.ReactNode;
-  match?: (pathname: string) => boolean;
-};
+type NavItem =
+  | {
+      kind: "link";
+      href: string;
+      label: string;
+      icon: React.ReactNode;
+      match?: (pathname: string) => boolean;
+    }
+  | { kind: "search"; label: string; icon: React.ReactNode };
 
-const items: Item[] = [
-  { href: "/", label: "Home", icon: <IconHome />, match: (p) => p === "/" },
-  { href: "/product", label: "Shop", icon: <IconGrid />, match: (p) => p.startsWith("/product") },
-  { href: "/search", label: "Search", icon: <IconSearch />, match: (p) => p.startsWith("/search") },
-  { href: "/auth/login", label: "Account", icon: <IconUser />, match: (p) => p.startsWith("/auth") },
+const items: NavItem[] = [
+  { kind: "link", href: "/", label: "Home", icon: <IconHome />, match: (p) => p === "/" },
+  { kind: "search", label: "Search", icon: <IconSearch /> },
+  { kind: "link", href: "/product", label: "Shop", icon: <IconGrid />, match: (p) => p.startsWith("/product") },
+  { kind: "link", href: "/auth/login", label: "Account", icon: <IconUser />, match: (p) => p.startsWith("/auth") },
 ];
 
 export function MobileBottomNav() {
@@ -71,6 +74,23 @@ export function MobileBottomNav() {
           style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
           {items.map((it) => {
+            if (it.kind === "search") {
+              return (
+                <button
+                  key="search"
+                  type="button"
+                  onClick={() => window.dispatchEvent(new Event("hanket:mobile-search"))}
+                  className={[
+                    "flex flex-col items-center justify-center gap-1",
+                    "text-[9px] uppercase tracking-[0.18em] font-bold",
+                    "text-flat-muted hover:text-flat-text transition-colors",
+                  ].join(" ")}
+                >
+                  <NavIcon>{it.icon}</NavIcon>
+                  <span>{it.label}</span>
+                </button>
+              );
+            }
             const active = it.match ? it.match(pathname) : pathname === it.href;
             return (
               <Link
