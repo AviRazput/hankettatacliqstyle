@@ -39,6 +39,27 @@ export function Hero() {
     };
   }, [active, slides.length, goTo]);
 
+  // Preload next slides so Netlify doesn't "load late" on transition.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!slides.length) return;
+
+    const order = [
+      (active + 1) % slides.length,
+      (active + 2) % slides.length,
+      (active + 3) % slides.length,
+    ];
+
+    for (const idx of order) {
+      const src = slides[idx]?.imageSrc;
+      if (!src) continue;
+      const img = new window.Image();
+      img.decoding = "async";
+      img.loading = "eager";
+      img.src = src;
+    }
+  }, [active, slides]);
+
   const slide = slides[active];
 
   return (
@@ -60,6 +81,7 @@ export function Hero() {
                   alt={slide.imageAlt}
                   fill
                   priority
+                  fetchPriority="high"
                   sizes="(max-width: 1536px) 100vw, 1500px"
                   className="object-cover object-center"
                   style={{ filter: slide.imageFilter }}
