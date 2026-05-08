@@ -2,44 +2,174 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { heroSlides } from "../../data/heroSlides";
 
 const AUTO_SLIDE_MS = 6000;
-const TRANSITION_S = 3;
+/** Skip auto-advance for this long after any manual navigation (arrows/dots). */
+const MANUAL_PAUSE_MS = 7500;
+const TRANSITION_AUTO_S = 1.05;
+const TRANSITION_MANUAL_S = 0.42;
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const EASE_SNAP: [number, number, number, number] = [0.33, 1, 0.68, 1];
+
+type InteractionSource = "auto" | "manual-next" | "manual-prev";
+
+type CarouselState = { active: number; interactionSource: InteractionSource };
+
+type CarouselAction =
+  | { type: "auto_next" }
+  | { type: "manual_prev" }
+  | { type: "manual_next" }
+  | { type: "go_to"; index: number };
+
+function carouselReducer(
+  state: CarouselState,
+  action: CarouselAction,
+  slideCount: number,
+): CarouselState {
+  if (slideCount === 0) return state;
+
+  switch (action.type) {
+    case "auto_next": {
+      return {
+        active: (state.active + 1) % slideCount,
+        interactionSource: "auto",
+      };
+    }
+    case "manual_prev": {
+      return {
+        active: (state.active - 1 + slideCount) % slideCount,
+        interactionSource: "manual-prev",
+      };
+    }
+    case "manual_next": {
+      return {
+        active: (state.active + 1) % slideCount,
+        interactionSource: "manual-next",
+      };
+    }
+    case "go_to": {
+      if (action.index === state.active) return state;
+      const forward = (action.index - state.active + slideCount) % slideCount;
+      const backward = (state.active - action.index + slideCount) % slideCount;
+      const towardNext = forward <= backward;
+      return {
+        active: action.index,
+        interactionSource: towardNext ? "manual-next" : "manual-prev",
+      };
+    }
+  }
+}
 const PRELOAD_AHEAD = 5;
 const PRELOAD_LINKS_MAX = 6;
 
+function IconChevronLeft({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <path
+        d="m15 18-6-6 6-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function IconChevronRight({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <path
+        d="m9 18 6-6-6-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function getSlideMotion(interactionSource: InteractionSource) {
+  if (interactionSource === "auto") {
+    return {
+      initial: { opacity: 0 },
+      animate: { opacity: 1, x: "0%" },
+      exit: { opacity: 0 },
+      transition: { duration: TRANSITION_AUTO_S, ease: EASE },
+    };
+  }
+  if (interactionSource === "manual-next") {
+    return {
+      initial: { opacity: 1, x: "100%" },
+      animate: { opacity: 1, x: "0%" },
+      exit: { opacity: 1, x: "-100%" },
+      transition: { duration: TRANSITION_MANUAL_S, ease: EASE_SNAP },
+    };
+  }
+  return {
+    initial: { opacity: 1, x: "-100%" },
+    animate: { opacity: 1, x: "0%" },
+    exit: { opacity: 1, x: "100%" },
+    transition: { duration: TRANSITION_MANUAL_S, ease: EASE_SNAP },
+  };
+}
+
 export function Hero() {
   const slides = heroSlides;
+  const slideCount = slides.length;
 
-  const [active, setActive] = useState(0);
-
-  const timerRef = useRef<number | null>(null);
-  const lastUserActionRef = useRef(0);
-
-  const goTo = useCallback(
-    (nextIndex: number) => {
-      if (slides.length === 0) return;
-      setActive(nextIndex);
-    },
-    [slides.length],
+  const [{ active, interactionSource }, dispatch] = useReducer(
+    (s: CarouselState, a: CarouselAction) => carouselReducer(s, a, slideCount),
+    { active: 0, interactionSource: "auto" },
   );
 
-  useEffect(() => {
-    timerRef.current = window.setInterval(() => {
-      const recentlyClicked = Date.now() - lastUserActionRef.current < 1200;
-      if (recentlyClicked) return;
+  const lastUserActionRef = useRef(0);
 
-      const nextIndex = (active + 1) % slides.length;
-      goTo(nextIndex);
+  const goPrev = useCallback(() => {
+    if (slideCount === 0) return;
+    lastUserActionRef.current = Date.now();
+    requestAnimationFrame(() => {
+      dispatch({ type: "manual_prev" });
+    });
+  }, [slideCount]);
+
+  const goNext = useCallback(() => {
+    if (slideCount === 0) return;
+    lastUserActionRef.current = Date.now();
+    requestAnimationFrame(() => {
+      dispatch({ type: "manual_next" });
+    });
+  }, [slideCount]);
+
+  const goToDot = useCallback((index: number) => {
+    if (slideCount === 0) return;
+    lastUserActionRef.current = Date.now();
+    requestAnimationFrame(() => {
+      dispatch({ type: "go_to", index });
+    });
+  }, [slideCount]);
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (Date.now() - lastUserActionRef.current < MANUAL_PAUSE_MS) return;
+      dispatch({ type: "auto_next" });
     }, AUTO_SLIDE_MS);
 
-    return () => {
-      if (timerRef.current) window.clearInterval(timerRef.current);
-    };
-  }, [active, slides.length, goTo]);
+    return () => window.clearInterval(id);
+  }, [active, slideCount]);
 
   // Preload active + next slides (desktop + mobile assets)
   useEffect(() => {
@@ -109,12 +239,7 @@ export function Hero() {
   const mobileSrc = slide?.mobileImageSrc ?? slide?.imageSrc ?? null;
   const isInitial = active === 0;
 
-  const slideMotion = {
-    initial: { x: "100%" },
-    animate: { x: "0%" },
-    exit: { x: "-100%" },
-    transition: { duration: TRANSITION_S, ease: EASE },
-  };
+  const slideMotion = getSlideMotion(interactionSource);
 
   return (
     <section className="bg-flat-bg w-full min-w-0 overflow-hidden">
@@ -156,23 +281,44 @@ export function Hero() {
           ) : null}
         </AnimatePresence>
 
-        {/* Mobile dots overlaid to avoid extra blank space */}
-        <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2 px-4">
-          {slides.map((s, idx) => (
+        {/* Mobile dots + prev/next (overlaid; arrows match light dot treatment on imagery) */}
+        <div className="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4">
+          {slides.length > 1 ? (
             <button
-              key={`${s.id}-dot-m`}
               type="button"
-              aria-label={`Go to slide ${idx + 1}`}
-              onClick={() => {
-                lastUserActionRef.current = Date.now();
-                goTo(idx);
-              }}
-              className={[
-                "h-2.5 w-2.5 rounded-full border border-white/60 transition-all",
-                idx === active ? "bg-white w-6" : "bg-white/20 hover:bg-white/40",
-              ].join(" ")}
-            />
-          ))}
+              aria-label="Previous slide"
+              onClick={goPrev}
+              className="min-h-11 min-w-11 inline-flex shrink-0 items-center justify-center rounded-sm text-white/70 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+            >
+              <IconChevronLeft className="h-5 w-5" />
+            </button>
+          ) : null}
+          <div className="flex max-w-[min(100%,220px)] flex-wrap items-center justify-center gap-2 sm:max-w-none">
+            {slides.map((s, idx) => (
+              <button
+                key={`${s.id}-dot-m`}
+                type="button"
+                aria-label={`Go to slide ${idx + 1}`}
+                onClick={() => {
+                  goToDot(idx);
+                }}
+                className={[
+                  "h-2.5 w-2.5 shrink-0 rounded-full border border-white/60 transition-all",
+                  idx === active ? "bg-white w-6" : "bg-white/20 hover:bg-white/40",
+                ].join(" ")}
+              />
+            ))}
+          </div>
+          {slides.length > 1 ? (
+            <button
+              type="button"
+              aria-label="Next slide"
+              onClick={goNext}
+              className="min-h-11 min-w-11 inline-flex shrink-0 items-center justify-center rounded-sm text-white/70 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+            >
+              <IconChevronRight className="h-5 w-5" />
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -206,24 +352,45 @@ export function Hero() {
           </AnimatePresence>
         </div>
 
-        <div className="hidden md:flex py-3 md:py-5 justify-center gap-2">
-          {slides.map((s, idx) => (
+        <div className="hidden md:flex items-center justify-center gap-2 py-3 md:gap-3 md:py-5">
+          {slides.length > 1 ? (
             <button
-              key={`${s.id}-dot`}
               type="button"
-              aria-label={`Go to slide ${idx + 1}`}
-              onClick={() => {
-                lastUserActionRef.current = Date.now();
-                goTo(idx);
-              }}
-              className={[
-                "h-2.5 w-2.5 rounded-full border border-flat-text/30 transition-all",
-                idx === active
-                  ? "bg-flat-text w-6"
-                  : "bg-transparent hover:bg-flat-text/20",
-              ].join(" ")}
-            />
-          ))}
+              aria-label="Previous slide"
+              onClick={goPrev}
+              className="text-flat-muted hover:text-flat-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flat-text/30 min-h-11 min-w-11 inline-flex shrink-0 items-center justify-center rounded-sm transition-colors hover:bg-flat-text/5"
+            >
+              <IconChevronLeft className="h-5 w-5" />
+            </button>
+          ) : null}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {slides.map((s, idx) => (
+              <button
+                key={`${s.id}-dot`}
+                type="button"
+                aria-label={`Go to slide ${idx + 1}`}
+                onClick={() => {
+                  goToDot(idx);
+                }}
+                className={[
+                  "h-2.5 w-2.5 shrink-0 rounded-full border border-flat-text/30 transition-all",
+                  idx === active
+                    ? "bg-flat-text w-6"
+                    : "bg-transparent hover:bg-flat-text/20",
+                ].join(" ")}
+              />
+            ))}
+          </div>
+          {slides.length > 1 ? (
+            <button
+              type="button"
+              aria-label="Next slide"
+              onClick={goNext}
+              className="text-flat-muted hover:text-flat-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flat-text/30 min-h-11 min-w-11 inline-flex shrink-0 items-center justify-center rounded-sm transition-colors hover:bg-flat-text/5"
+            >
+              <IconChevronRight className="h-5 w-5" />
+            </button>
+          ) : null}
         </div>
       </div>
     </section>
