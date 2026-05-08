@@ -39,7 +39,7 @@ export function Hero() {
     };
   }, [active, slides.length, goTo]);
 
-  // Preload next slides so Netlify doesn't "load late" on transition.
+  // Preload next slides (desktop + mobile assets)
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!slides.length) return;
@@ -51,33 +51,103 @@ export function Hero() {
     ];
 
     for (const idx of order) {
-      const src = slides[idx]?.imageSrc;
-      if (!src) continue;
-      const img = new window.Image();
-      img.decoding = "async";
-      img.loading = "eager";
-      img.src = src;
+      const a = slides[idx];
+      const candidates = [a?.imageSrc, a?.mobileImageSrc].filter(Boolean) as string[];
+      for (const src of candidates) {
+        const img = new window.Image();
+        img.decoding = "async";
+        img.loading = "eager";
+        img.src = src;
+      }
     }
   }, [active, slides]);
 
   const slide = slides[active];
+  const desktopSrc = slide?.imageSrc ?? null;
+  const mobileSrc = slide?.mobileImageSrc ?? slide?.imageSrc ?? null;
+
+  const slideMotion = {
+    initial: { x: "100%" },
+    animate: { x: "0%" },
+    exit: { x: "-100%" },
+    transition: { duration: TRANSITION_S, ease: EASE },
+  };
 
   return (
-    <section className="bg-flat-bg">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-8">
-        <div className="relative w-full aspect-[16/5] max-h-[480px] overflow-hidden bg-flat-bg mt-3 sm:mt-4">
+    <section className="bg-flat-bg w-full min-w-0 overflow-hidden">
+      {/* Mobile: full-bleed banner (hidden from md) */}
+      <div
+        className={[
+          "md:hidden relative mt-2 overflow-hidden",
+          // Full-bleed: ignore the global max-width container on mobile
+          "w-screen left-1/2 -translate-x-1/2",
+          // Premium full look: tall + edge-to-edge, no blank bands
+          "h-[80vh] min-h-[320px] max-h-[760px]",
+          "bg-flat-bg",
+        ].join(" ")}
+      >
+        <AnimatePresence initial={false} mode="popLayout">
+          {slide && mobileSrc ? (
+            <motion.div
+              key={`m-${slide.id}`}
+              className="absolute inset-0"
+              initial={slideMotion.initial}
+              animate={slideMotion.animate}
+              exit={slideMotion.exit}
+              transition={slideMotion.transition}
+            >
+              <Image
+                src={mobileSrc}
+                alt={slide.imageAlt}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="100vw"
+                className="object-cover object-center"
+                style={{ filter: slide.imageFilter }}
+              />
+              {/* subtle overlay helps text-like banners pop while staying “full” */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/10" />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+
+        {/* Mobile dots overlaid to avoid extra blank space */}
+        <div className="absolute inset-x-0 bottom-3 flex justify-center gap-2 px-4">
+          {slides.map((s, idx) => (
+            <button
+              key={`${s.id}-dot-m`}
+              type="button"
+              aria-label={`Go to slide ${idx + 1}`}
+              onClick={() => {
+                lastUserActionRef.current = Date.now();
+                goTo(idx);
+              }}
+              className={[
+                "h-2.5 w-2.5 rounded-full border border-white/60 transition-all",
+                idx === active ? "bg-white w-6" : "bg-white/20 hover:bg-white/40",
+              ].join(" ")}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 w-full min-w-0">
+
+        {/* Desktop (md+): wide banner only — hidden below md */}
+        <div className="relative mt-3 md:mt-4 hidden md:block w-full overflow-hidden bg-flat-bg aspect-[16/5] max-h-[620px] min-h-[220px]">
           <AnimatePresence initial={false} mode="popLayout">
-            {slide ? (
+            {slide && desktopSrc ? (
               <motion.div
-                key={slide.id}
+                key={`d-${slide.id}`}
                 className="absolute inset-0"
-                initial={{ x: "100%" }}
-                animate={{ x: "0%" }}
-                exit={{ x: "-100%" }}
-                transition={{ duration: TRANSITION_S, ease: EASE }}
+                initial={slideMotion.initial}
+                animate={slideMotion.animate}
+                exit={slideMotion.exit}
+                transition={slideMotion.transition}
               >
                 <Image
-                  src={slide.imageSrc}
+                  src={desktopSrc}
                   alt={slide.imageAlt}
                   fill
                   priority
@@ -91,7 +161,7 @@ export function Hero() {
           </AnimatePresence>
         </div>
 
-        <div className="py-5 flex justify-center gap-2">
+        <div className="hidden md:flex py-3 md:py-5 justify-center gap-2">
           {slides.map((s, idx) => (
             <button
               key={`${s.id}-dot`}

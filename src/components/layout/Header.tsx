@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 function IconSearch() {
   return (
@@ -31,7 +32,7 @@ function IconHeart() {
 
 function IconCart() {
   return (
-    <svg className="w-5 h-5 stroke-current fill-none stroke-2 mr-2" viewBox="0 0 24 24">
+    <svg className="w-5 h-5 stroke-current fill-none stroke-2 shrink-0" viewBox="0 0 24 24">
       <circle cx="9" cy="21" r="1" />
       <circle cx="20" cy="21" r="1" />
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
@@ -63,7 +64,8 @@ export function Header() {
   const [isCompact, setIsCompact] = useState(false);
   const cartCount = 0;
 
-  const drawerLinks = useMemo(() => navLinks.slice(0, 4), []);
+  const drawerLinks = navLinks;
+  const drawerAccountLinks = ["Login / Register", "Wishlist", "Cart"];
 
   useEffect(() => {
     function onScroll() {
@@ -81,73 +83,112 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  const headerHeight = isCompact ? "h-[60px]" : "h-[72px] md:h-[80px]";
+
   return (
-    <header className="bg-flat-bg border-b border-flat-border sticky top-0 z-50 transition-all duration-300">
+    <header className="bg-flat-bg border-b border-flat-border fixed md:sticky top-0 left-0 right-0 w-full z-50 transition-all duration-300">
       <div
         className={[
-          "max-w-[1500px] mx-auto px-8 grid grid-cols-[200px_1fr_auto] items-center transition-[height] duration-300",
-          isCompact ? "h-[60px]" : "h-[80px]",
+          "max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 transition-[height] duration-300",
+          headerHeight,
         ].join(" ")}
       >
-        {/* Logo section (fixed width so nav doesn't shift) */}
-        <a href="#" className="flex items-center w-[240px] shrink-0">
-          <Image
-            src="/logo.png"
-            alt="Hanket"
-            width={160}
-            height={64}
-            priority
-            className="h-[58px] w-auto object-contain"
-          />
-        </a>
-
-        {/* Nav section (centered, independent from logo size) */}
-        <nav className="hidden md:flex gap-8 justify-center">
-          {navLinks.map((label) => (
-            <a key={label} href="#" className="nav-link">
-              {label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Actions section */}
-        <div className="flex items-center gap-6 justify-end">
-          <button className="text-flat-text hover:text-flat-muted transition-colors" aria-label="Search">
-            <IconSearch />
-          </button>
-
-          <a
-            href="#"
-            className="hidden lg:flex items-center text-flat-text hover:text-flat-muted transition-colors font-sans text-xs uppercase tracking-widest"
-          >
-            <span className="mr-2">
-              <IconUser />
-            </span>
-            Login / Register
-          </a>
-
-          <button className="text-flat-text hover:text-flat-muted transition-colors" aria-label="Wishlist">
-            <IconHeart />
-          </button>
-
+        {/* Mobile: hamburger left, logo centered, cart right */}
+        <div className="md:hidden grid grid-cols-3 items-center h-full">
           <button
-            className="flex items-center text-flat-text hover:text-flat-muted transition-colors font-sans text-xs uppercase tracking-widest"
-            aria-label="Cart"
-          >
-            <IconCart />
-            <span className="hidden lg:inline">Cart</span>
-            <span className="bg-flat-text text-flat-bg text-[10px] px-[6px] py-[2px] ml-1 flex items-center justify-center min-w-[20px]">
-              {cartCount}
-            </span>
-          </button>
-
-          <button
-            className="md:hidden text-flat-text"
+            type="button"
+            className="justify-self-start text-flat-text w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-flat-layer transition-colors"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="Menu"
+            aria-expanded={mobileOpen}
           >
             <IconMenu />
           </button>
+
+          <Link
+            href="/"
+            className="justify-self-center flex items-center min-w-0 max-w-[min(200px,60vw)] px-1 py-2"
+            aria-label="Hanket home"
+          >
+            <Image
+              src="/logo.png"
+              alt="Hanket"
+              width={160}
+              height={64}
+              priority
+              className="h-[54px] w-auto max-w-full object-contain"
+            />
+          </Link>
+
+          <Link
+            href="/cart"
+            className="justify-self-end relative text-flat-text w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-flat-layer transition-colors"
+            aria-label="Cart"
+          >
+            <IconCart />
+            <span className="absolute -top-1 -right-1 bg-flat-text text-flat-bg text-[10px] px-[6px] py-[2px] flex items-center justify-center min-w-[20px]">
+              {cartCount}
+            </span>
+          </Link>
+        </div>
+
+        {/* Tablet / desktop */}
+        <div className="hidden md:grid md:grid-cols-[240px_1fr_auto] md:items-center md:h-full">
+          <a href="#" className="flex items-center shrink-0 md:w-[240px]">
+            <Image
+              src="/logo.png"
+              alt="Hanket"
+              width={160}
+              height={64}
+              priority
+              className="h-[52px] md:h-[58px] w-auto object-contain"
+            />
+          </a>
+
+          <nav className="flex flex-wrap justify-center gap-x-2 sm:gap-x-3 gap-y-1.5 lg:gap-x-8 lg:gap-y-0 relative lg:-left-2 min-w-0 px-1">
+            {navLinks.map((label) => (
+              <a key={label} href="#" className="nav-link whitespace-nowrap">
+                {label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-4 lg:gap-6 justify-end min-w-0">
+            <button
+              className="inline-flex text-flat-text hover:text-flat-muted transition-colors shrink-0"
+              aria-label="Search"
+            >
+              <IconSearch />
+            </button>
+
+            <a
+              href="#"
+              className="hidden lg:flex items-center text-flat-text hover:text-flat-muted transition-colors font-sans text-xs uppercase tracking-widest whitespace-nowrap"
+            >
+              <span className="mr-2 shrink-0">
+                <IconUser />
+              </span>
+              Login / Register
+            </a>
+
+            <button
+              className="inline-flex text-flat-text hover:text-flat-muted transition-colors shrink-0"
+              aria-label="Wishlist"
+            >
+              <IconHeart />
+            </button>
+
+            <button
+              className="flex items-center gap-2 text-flat-text hover:text-flat-muted transition-colors font-sans text-xs uppercase tracking-widest min-w-0"
+              aria-label="Cart"
+            >
+              <IconCart />
+              <span className="hidden lg:inline truncate">Cart</span>
+              <span className="bg-flat-text text-flat-bg text-[10px] px-[6px] py-[2px] ml-1 flex items-center justify-center min-w-[20px] shrink-0">
+                {cartCount}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -185,16 +226,34 @@ export function Header() {
             ✕
           </button>
         </div>
-        <nav className="flex flex-col flex-1 overflow-y-auto p-6 gap-6">
-          {drawerLinks.map((label) => (
-            <a
-              key={label}
-              href="#"
-              className="text-xs font-bold uppercase tracking-widest text-flat-text hover:text-flat-muted transition-colors"
-            >
-              {label}
-            </a>
-          ))}
+        <nav className="flex flex-col flex-1 overflow-y-auto p-6 pb-10">
+          <div className="flex flex-col gap-5">
+            {drawerLinks.map((label) => (
+              <a
+                key={label}
+                href="#"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs font-bold uppercase tracking-widest text-flat-text hover:text-flat-muted transition-colors"
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+
+          <div className="my-6 border-t border-flat-border" />
+
+          <div className="flex flex-col gap-4">
+            {drawerAccountLinks.map((label) => (
+              <a
+                key={label}
+                href="#"
+                onClick={() => setMobileOpen(false)}
+                className="text-xs uppercase tracking-widest text-flat-text/90 hover:text-flat-muted transition-colors"
+              >
+                {label}
+              </a>
+            ))}
+          </div>
         </nav>
       </div>
     </header>
