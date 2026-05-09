@@ -96,8 +96,8 @@ export function Header() {
     return () => window.removeEventListener("hanket:mobile-search", onMobileSearchOpen);
   }, []);
 
-  const headerHeight = isCompact ? "h-[50px] md:h-auto" : "h-[58px] md:h-auto";
-  const mobileLogoHeight = isCompact ? "h-[36px]" : "h-[40px]";
+  const headerHeight = isCompact ? "h-[56px] md:h-auto" : "h-[66px] md:h-auto";
+  const mobileLogoHeight = isCompact ? "h-[42px]" : "h-[48px]";
 
   return (
     <header className="bg-flat-bg border-b border-flat-border fixed md:sticky top-0 left-0 right-0 w-full z-50 transition-all duration-300">
@@ -121,15 +121,17 @@ export function Header() {
 
           <Link
             href="/"
-            className="justify-self-center flex items-center min-w-0 max-w-[min(200px,60vw)] px-1 py-1"
+            className="justify-self-center flex items-center min-w-0 max-w-[min(260px,68vw)] px-1 py-1"
             aria-label="Hanket home"
           >
             <Image
               src="/logo.png"
               alt="Hanket"
-              width={160}
-              height={64}
-              priority
+              width={320}
+              height={128}
+              sizes="(max-width: 767px) min(68vw, 260px), 300px"
+              quality={85}
+              preload
               className={[mobileLogoHeight, "w-auto max-w-full object-contain"].join(" ")}
             />
           </Link>
@@ -151,15 +153,17 @@ export function Header() {
           <div className="flex flex-nowrap items-center gap-3 md:gap-4 lg:gap-6 xl:gap-8 min-w-0">
             <a
               href="#"
-              className="flex items-center shrink-0 w-[200px] md:w-[220px] lg:w-[240px] min-w-[200px]"
+              className="flex items-center shrink-0 w-[232px] md:w-[256px] lg:w-[280px] min-w-[232px]"
             >
               <Image
                 src="/logo.png"
                 alt="Hanket"
-                width={160}
-                height={64}
-                priority
-                className="h-[52px] md:h-[58px] w-auto max-w-full object-contain"
+                width={320}
+                height={128}
+                sizes="(max-width: 1023px) 232px, (max-width: 1279px) 256px, 280px"
+                quality={85}
+                preload
+                className="h-[60px] md:h-[68px] w-auto max-w-full object-contain"
               />
             </a>
 
@@ -252,9 +256,11 @@ export function Header() {
             <Image
               src="/logo.png"
               alt="Hanket"
-              width={110}
-              height={44}
-              className="h-[42px] w-auto object-contain"
+              width={240}
+              height={96}
+              sizes="280px"
+              quality={85}
+              className="h-[50px] w-auto object-contain"
             />
           </span>
           <button
