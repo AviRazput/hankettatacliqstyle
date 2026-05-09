@@ -101,10 +101,10 @@ export function Header() {
                 alt="Hanket"
                 width={320}
                 height={128}
-                sizes="(max-width: 767px) min(68vw, 260px), 300px"
-                quality={85}
+                sizes="(max-width: 767px) min(92vw, 360px), 300px"
+                quality={90}
                 preload
-                className="h-[48px] w-auto max-w-full object-contain"
+                className="h-[48px] w-auto max-w-full object-contain origin-center scale-[1.16]"
               />
             </Link>
 
