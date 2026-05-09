@@ -10,7 +10,7 @@ const categories = [
     title: "Womens",
     subtitle: "180 Products",
     img: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-woman.jpg",
-    className: "col-span-1 row-span-1 md:row-span-2",
+    className: "col-span-1 row-span-2 md:row-span-2",
     variant: "lightTop" as const,
   },
   {
@@ -26,13 +26,6 @@ const categories = [
     img: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-accesories-9.jpg",
     className: "col-span-1 row-span-1",
     variant: "lightTop" as const,
-  },
-  {
-    title: "Footwear",
-    subtitle: "96 Products",
-    img: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-shoes.jpg",
-    className: "col-span-1 row-span-1",
-    variant: "center" as const,
   },
 ];
 
@@ -52,7 +45,7 @@ export function FeaturedCategories() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 auto-rows-[220px] sm:auto-rows-[260px] md:auto-rows-[240px] gap-px bg-flat-border border border-flat-border">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 auto-rows-[240px] sm:auto-rows-[280px] md:auto-rows-[240px] gap-px bg-flat-border border border-flat-border">
           {categories.map((c) => (
             <div
               key={c.title}
