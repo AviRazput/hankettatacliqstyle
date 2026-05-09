@@ -27,6 +27,13 @@ const categories = [
     className: "col-span-1 row-span-1",
     variant: "lightTop" as const,
   },
+  {
+    title: "Footwear",
+    subtitle: "96 Products",
+    img: "https://woodmart.xtemos.com/wp-content/uploads/2017/01/cat-img-shoes.jpg",
+    className: "col-span-1 row-span-1",
+    variant: "center" as const,
+  },
 ];
 
 export function FeaturedCategories() {
@@ -37,13 +44,15 @@ export function FeaturedCategories() {
           <div className="text-[0.75rem] leading-[1.5] tracking-[0.15em] text-flat-muted uppercase mb-4">
             Welcome to HANKET
           </div>
-          <h2 className="mb-4 text-flat-text text-[2.5rem] leading-[1.2]">Featured Categories</h2>
+          <h2 className="mb-4 text-flat-text text-[1.75rem] sm:text-[2.5rem] leading-[1.2] whitespace-nowrap md:whitespace-normal">
+            Featured Categories
+          </h2>
           <p className="text-flat-muted">
             Explore our minimalist approach to everyday fashion across all categories.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 auto-rows-[180px] sm:auto-rows-[220px] md:auto-rows-[240px] gap-px bg-flat-border border border-flat-border">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 auto-rows-[220px] sm:auto-rows-[260px] md:auto-rows-[240px] gap-px bg-flat-border border border-flat-border">
           {categories.map((c) => (
             <div
               key={c.title}
