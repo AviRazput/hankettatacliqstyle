@@ -71,6 +71,54 @@ const SWIPE_VELOCITY_PX_S = 450;
 /** Require horizontal movement to clearly dominate vertical (avoids fighting page scroll). */
 const SWIPE_DOMINANCE = 1.25;
 
+function HeroDots({
+  slides,
+  active,
+  onSelect,
+}: {
+  slides: typeof heroSlides;
+  active: number;
+  onSelect: (index: number) => void;
+}) {
+  return (
+    <div
+      className="inline-flex items-center justify-center gap-2.5 bg-transparent"
+      role="tablist"
+      aria-label="Hero slides"
+    >
+      {slides.map((s, idx) => {
+        const isActive = idx === active;
+        return (
+          <button
+            key={s.id}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            aria-label={`Go to slide ${idx + 1}`}
+            onClick={() => onSelect(idx)}
+            className="hero-dots-btn relative flex h-2.5 min-w-[8px] items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#333]/40"
+          >
+            <motion.span
+              aria-hidden
+              className="block h-2.5 rounded-full"
+              initial={false}
+              animate={{
+                width: isActive ? 32 : 8,
+                backgroundColor: isActive ? "#1a1a1a" : "#d4d4d4",
+                boxShadow: isActive
+                  ? "0 2px 8px rgba(0,0,0,0.18)"
+                  : "0 0 0 rgba(0,0,0,0)",
+              }}
+              whileHover={!isActive ? { backgroundColor: "#b8b8b8", scale: 1.08 } : undefined}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function getSlideMotion(interactionSource: InteractionSource) {
   if (interactionSource === "auto") {
     return {
@@ -240,14 +288,6 @@ export function Hero() {
   const isInitial = active === 0;
   const slideMotion = getSlideMotion(interactionSource);
 
-  const dotClass = (idx: number) =>
-    [
-      "h-2.5 shrink-0 rounded-full border-2 transition-all",
-      idx === active
-        ? "w-7 border-[#333] bg-[#333]"
-        : "w-2.5 border-[#bbb] bg-[#d4d4d4] hover:bg-[#bbb]",
-    ].join(" ");
-
   return (
     <section className="bg-flat-bg w-full min-w-0">
       {/* Mobile */}
@@ -294,22 +334,8 @@ export function Hero() {
         </div>
 
         {slides.length > 1 ? (
-          <div
-            className="flex min-h-12 items-center justify-center gap-2.5 border-b border-flat-border bg-flat-bg px-4 py-3"
-            role="tablist"
-            aria-label="Hero slides"
-          >
-            {slides.map((s, idx) => (
-              <button
-                key={`${s.id}-dot-m`}
-                type="button"
-                role="tab"
-                aria-selected={idx === active}
-                aria-label={`Go to slide ${idx + 1}`}
-                onClick={() => goToDot(idx)}
-                className={dotClass(idx)}
-              />
-            ))}
+          <div className="flex min-h-[52px] items-center justify-center border-b border-flat-border bg-flat-bg px-4 py-3.5">
+            <HeroDots slides={slides} active={active} onSelect={goToDot} />
           </div>
         ) : null}
       </div>
@@ -346,22 +372,8 @@ export function Hero() {
         </div>
 
         {slides.length > 1 ? (
-          <div
-            className="flex min-h-14 items-center justify-center gap-3 border-b border-flat-border bg-flat-bg px-6 py-4"
-            role="tablist"
-            aria-label="Hero slides"
-          >
-            {slides.map((s, idx) => (
-              <button
-                key={`${s.id}-dot`}
-                type="button"
-                role="tab"
-                aria-selected={idx === active}
-                aria-label={`Go to slide ${idx + 1}`}
-                onClick={() => goToDot(idx)}
-                className={dotClass(idx)}
-              />
-            ))}
+          <div className="flex min-h-[60px] items-center justify-center border-b border-flat-border bg-flat-bg px-6 py-5">
+            <HeroDots slides={slides} active={active} onSelect={goToDot} />
           </div>
         ) : null}
       </div>

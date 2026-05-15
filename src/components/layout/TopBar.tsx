@@ -34,7 +34,18 @@ export function TopBar() {
           </a>
         </div>
         <div className="flex flex-wrap items-center justify-end gap-5 lg:gap-7">
-          <a href="tel:+919876543210" className="inline-flex items-center gap-2 text-[#555] hover:text-[#333] transition-colors">
+          <span className="inline-flex items-center gap-2 text-[#555]">
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+              <path
+                d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="12" cy="11" r="2.5" />
+            </svg>
+            <span>New Delhi, 110063</span>
+          </span>
+          <a href="tel:+919711155417" className="inline-flex items-center gap-2 text-[#555] hover:text-[#333] transition-colors">
             <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
               <path
                 d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
@@ -42,7 +53,7 @@ export function TopBar() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>+91 98765 43210</span>
+            <span>+91 97111 55417</span>
           </a>
           <a href="#" className="inline-flex items-center hover:text-[#333] transition-colors">
             <ExpertAvatars />

@@ -110,9 +110,9 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-[13px]">
               <li>
-                123 Fashion Avenue
+                New Delhi
                 <br />
-                New York, NY 10001
+                110063
               </li>
               <li>
                 <a href="mailto:hello@hanket.com" className="hover:text-white transition-colors">
@@ -120,8 +120,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="tel:+1234567890" className="hover:text-white transition-colors">
-                  +1 (234) 567-890
+                <a href="tel:+919711155417" className="hover:text-white transition-colors">
+                  +91 97111 55417
                 </a>
               </li>
             </ul>

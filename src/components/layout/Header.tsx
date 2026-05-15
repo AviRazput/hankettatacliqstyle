@@ -162,7 +162,7 @@ export function Header() {
       <div className="max-w-[1500px] mx-auto px-4 sm:px-5 md:px-6 lg:px-8 py-2 md:py-0">
         {/* Mobile */}
         <div className="md:hidden">
-          <div className="grid grid-cols-3 items-center min-h-[48px]">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center min-h-[48px] gap-2">
             <button
               type="button"
               className="justify-self-start text-flat-text w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-flat-layer transition-colors"
@@ -175,7 +175,7 @@ export function Header() {
 
             <Link
               href="/"
-              className="justify-self-center flex items-center min-w-0 max-w-[min(260px,68vw)] px-1 py-1 overflow-visible"
+              className="justify-self-center flex items-center min-w-0 max-w-[min(220px,58vw)] px-1 py-1 overflow-visible"
               aria-label="Hanket home"
             >
               <Image
@@ -192,16 +192,26 @@ export function Header() {
               />
             </Link>
 
-            <Link
-              href="/cart"
-              className="justify-self-end relative text-flat-text w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-flat-layer transition-colors"
-              aria-label="Cart"
-            >
-              <IconCart />
-              <span className="absolute -top-1 -right-1 bg-flat-text text-flat-bg text-[10px] px-[6px] py-[2px] flex items-center justify-center min-w-[20px]">
-                {cartCount}
-              </span>
-            </Link>
+            <div className="justify-self-end flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={() => openAuthDrawer("sign-in")}
+                className="text-[#333] w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-flat-layer transition-colors"
+                aria-label="Login / Register"
+              >
+                <IconUser />
+              </button>
+
+              <Link
+                href="/cart"
+                className="relative inline-flex items-center gap-1.5 bg-[#1a1a1a] text-white rounded-full pl-3 pr-3 py-2 hover:bg-[#333] transition-colors"
+                aria-label="Cart"
+              >
+                <IconBag />
+                <span className="text-[11px] font-medium leading-none">₹0.00</span>
+                <CountBadge count={cartCount} variant="cart" />
+              </Link>
+            </div>
           </div>
 
           <form className="mt-2 w-full" onSubmit={(e) => e.preventDefault()} role="search" aria-label="Site search">

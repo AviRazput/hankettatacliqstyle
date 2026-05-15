@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthDrawer } from "@/components/auth/AuthDrawerContext";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -41,15 +40,6 @@ function IconShop() {
   );
 }
 
-function IconUser() {
-  return (
-    <svg className="w-5 h-5 stroke-current fill-none stroke-2" viewBox="0 0 24 24">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
-    </svg>
-  );
-}
-
 const linkItems = [
   { href: "/", label: "Home", icon: <IconHome />, match: (p: string) => p === "/" },
   { href: "#", label: "Wishlist", icon: <IconWishlist />, match: () => false },
@@ -58,12 +48,11 @@ const linkItems = [
 
 export function MobileBottomNav() {
   const pathname = usePathname() ?? "/";
-  const { openAuthDrawer } = useAuthDrawer();
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[80] bg-flat-bg/95 backdrop-blur border-t border-flat-border max-w-[100vw] pb-[env(safe-area-inset-bottom)]">
       <div className="max-w-[1500px] mx-auto px-4">
-        <div className="h-16 min-h-[4rem] max-h-[4rem] grid grid-cols-4 items-center shrink-0">
+        <div className="h-16 min-h-[4rem] max-h-[4rem] grid grid-cols-3 items-center shrink-0">
           {linkItems.map((it) => {
             const active = it.match(pathname);
             return (
@@ -81,23 +70,6 @@ export function MobileBottomNav() {
               </Link>
             );
           })}
-
-          <button
-            type="button"
-            onClick={() => openAuthDrawer("sign-in")}
-            className={[
-              "flex flex-col items-center justify-center gap-1",
-              "text-[9px] uppercase tracking-[0.18em] font-bold",
-              pathname.startsWith("/auth")
-                ? "text-flat-text"
-                : "text-flat-muted hover:text-flat-text transition-colors",
-            ].join(" ")}
-          >
-            <NavIcon>
-              <IconUser />
-            </NavIcon>
-            <span>Account</span>
-          </button>
         </div>
       </div>
     </nav>
