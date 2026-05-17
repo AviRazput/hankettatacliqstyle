@@ -1,3 +1,4 @@
+import { socialTags } from "@/data/homepage";
 import Image from "next/image";
 import { instaImages } from "../../data/products";
 
@@ -21,23 +22,31 @@ function IconInstagramOutline() {
 
 export function InstagramSection() {
   return (
-    <section className="py-24 bg-flat-layer border-t border-flat-border overflow-hidden">
+    <section className="bg-white pt-5 pb-5 md:pt-6 md:pb-6 overflow-hidden">
       <div className="max-w-[1500px] mx-auto px-8">
-        <div className="text-center mb-12">
-          <div className="text-[0.75rem] leading-[1.5] tracking-[0.15em] text-flat-muted uppercase mb-4">
-            Follow Us on Instagram
+        <div className="text-center mb-10">
+          <p className="text-[0.75rem] leading-[1.5] tracking-[0.15em] text-flat-muted uppercase mb-4">
+            @hanket.in on Instagram
+          </p>
+          <h2 className="mb-4 text-flat-text text-[2rem] md:text-[2.5rem] leading-[1.2]">Social</h2>
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {socialTags.map((tag) => (
+              <span
+                key={tag}
+                className="text-[11px] uppercase tracking-widest border border-flat-border px-4 py-2 text-flat-muted"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
           <a
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-4 inline-block text-flat-text text-[2.5rem] leading-[1.2] hover:text-flat-pink transition-colors"
+            className="text-sm text-flat-text hover:text-flat-pink transition-colors underline underline-offset-4"
           >
-            @hanket.in
+            Follow @hanket.in
           </a>
-          <p className="text-flat-muted max-w-lg mx-auto">
-            Stay inspired — follow us for daily style drops, behind-the-scenes, and new arrivals.
-          </p>
         </div>
       </div>
 

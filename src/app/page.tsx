@@ -1,26 +1,30 @@
 import { SiteLayout } from "../components/layout/SiteLayout";
 import { Hero } from "../components/home/Hero";
-import { FeaturedCategories } from "../components/home/FeaturedCategories";
-import { FeaturedProducts } from "../components/home/FeaturedProducts";
-import { VideoBanner } from "../components/home/VideoBanner";
-import { BlogSection } from "../components/home/BlogSection";
-import { NewsletterSection } from "../components/home/NewsletterSection";
-import { WelcomeSection } from "../components/home/WelcomeSection";
+import { CategoriesSection } from "../components/home/CategoriesSection";
+import { TrendingNowSection } from "../components/home/TrendingNowSection";
+import { NewArrivalsSection } from "../components/home/NewArrivalsSection";
+import { FeaturedBrandsSection } from "../components/home/FeaturedBrandsSection";
+import { CreatorMarketplaceSection } from "../components/home/CreatorMarketplaceSection";
+import { BestsellersSection } from "../components/home/BestsellersSection";
+import { SaleBannerSection } from "../components/home/SaleBannerSection";
+import { WhyHanketSection } from "../components/home/WhyHanketSection";
 import { InstagramSection } from "../components/home/InstagramSection";
-import { BrandStrip } from "../components/home/BrandStrip";
+import { NewsletterSection } from "../components/home/NewsletterSection";
 
 export default function Home() {
   return (
     <SiteLayout>
       <Hero />
-      <FeaturedCategories />
-      <FeaturedProducts />
-      <VideoBanner />
-      <BlogSection />
-      <NewsletterSection />
-      <WelcomeSection />
+      <CategoriesSection />
+      <TrendingNowSection />
+      <NewArrivalsSection />
+      <FeaturedBrandsSection />
+      <CreatorMarketplaceSection />
+      <BestsellersSection />
+      <SaleBannerSection />
+      <WhyHanketSection />
       <InstagramSection />
-      <BrandStrip />
+      <NewsletterSection />
     </SiteLayout>
   );
 }

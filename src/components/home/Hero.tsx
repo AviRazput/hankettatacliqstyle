@@ -334,7 +334,7 @@ export function Hero() {
         </div>
 
         {slides.length > 1 ? (
-          <div className="flex min-h-[52px] items-center justify-center border-b border-flat-border bg-flat-bg px-4 py-3.5">
+          <div className="flex min-h-[44px] items-center justify-center bg-white px-4 py-2">
             <HeroDots slides={slides} active={active} onSelect={goToDot} />
           </div>
         ) : null}
@@ -372,7 +372,7 @@ export function Hero() {
         </div>
 
         {slides.length > 1 ? (
-          <div className="flex min-h-[60px] items-center justify-center border-b border-flat-border bg-flat-bg px-6 py-5">
+          <div className="flex min-h-[48px] items-center justify-center bg-white px-6 py-2.5">
             <HeroDots slides={slides} active={active} onSelect={goToDot} />
           </div>
         ) : null}

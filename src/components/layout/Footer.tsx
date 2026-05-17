@@ -1,3 +1,5 @@
+import { footerLinks } from "@/data/homepage";
+
 const INSTAGRAM_URL = "https://www.instagram.com/hanket.in/";
 
 function IconInstagram() {
@@ -8,141 +10,60 @@ function IconInstagram() {
   );
 }
 
-function IconTwitter() {
+function FooterColumn({ title, links }: { title: string; links: readonly { label: string; href: string }[] }) {
   return (
-    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-    </svg>
+    <div>
+      <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-6">{title}</h4>
+      <ul className="space-y-3 text-[13px]">
+        {links.map((link) => (
+          <li key={link.label}>
+            <a href={link.href} className="hover:text-white transition-colors">
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
 export function Footer() {
   return (
     <footer className="bg-[#1a1a1a] text-[#a8a8a8] border-t border-flat-text">
-      <div className="max-w-[1500px] mx-auto px-8 pt-24 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          <div>
-            <a
-              href="#"
-              className="font-serif font-bold text-[30px] tracking-widest text-white inline-block mb-6"
-            >
+      <div className="max-w-[1500px] mx-auto px-8 pt-20 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+          <div className="lg:col-span-1">
+            <a href="#" className="font-serif font-bold text-[30px] tracking-widest text-white inline-block mb-6">
               Hanket<span className="text-flat-muted">.</span>
             </a>
             <p className="text-[13px] leading-relaxed mb-6">
-              HANKET is a premium fashion house blending heritage craftsmanship with
-              contemporary design. Discover pieces made to last, made to love.
+              India&apos;s marketplace for emerging fashion brands, creators, and curated style.
             </p>
-            <div className="flex gap-4">
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 border border-[#333] flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                aria-label="Instagram — @hanket.in"
-              >
-                <IconInstagram />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 border border-[#333] flex items-center justify-center hover:bg-white hover:text-black transition-colors"
-                aria-label="Twitter"
-              >
-                <IconTwitter />
-              </a>
-            </div>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 border border-[#333] inline-flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+              aria-label="Instagram @hanket.in"
+            >
+              <IconInstagram />
+            </a>
           </div>
-
-          <div>
-            <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-6">
-              Categories
-            </h4>
-            <ul className="space-y-3 text-[13px]">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Mens
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Womens
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Kids
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Accessories
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-6">
-              Quick Links
-            </h4>
-            <ul className="space-y-3 text-[13px]">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Shipping &amp; Returns
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-6">
-              Get in Touch
-            </h4>
-            <ul className="space-y-3 text-[13px]">
-              <li>
-                New Delhi
-                <br />
-                110063
-              </li>
-              <li>
-                <a href="mailto:hello@hanket.com" className="hover:text-white transition-colors">
-                  hello@hanket.com
-                </a>
-              </li>
-              <li>
-                <a href="tel:+919711155417" className="hover:text-white transition-colors">
-                  +91 97111 55417
-                </a>
-              </li>
-            </ul>
-          </div>
+          <FooterColumn title="About" links={footerLinks.about} />
+          <FooterColumn title="Shop" links={footerLinks.shop} />
+          <FooterColumn title="Creators" links={footerLinks.creators} />
+          <FooterColumn title="Support" links={footerLinks.support} />
         </div>
 
-        <div className="border-t border-[#333] pt-6 flex flex-col md:flex-row justify-between items-center text-[11px] uppercase tracking-widest">
-          <div className="mb-4 md:mb-0">© 2026 HANKET. All rights reserved.</div>
+        <div className="border-t border-[#333] pt-6 flex flex-col md:flex-row justify-between items-center text-[11px] uppercase tracking-widest gap-4">
+          <div>© 2026 HANKET. All rights reserved.</div>
           <div className="flex gap-4">
             <span>VISA</span>
             <span>MC</span>
-            <span>AMEX</span>
-            <span>PP</span>
+            <span>UPI</span>
           </div>
         </div>
       </div>
     </footer>
   );
 }
-

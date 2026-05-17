@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthDrawer } from "@/components/auth/AuthDrawerContext";
+import { mainNav } from "@/data/homepage";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -118,16 +119,7 @@ function CountBadge({ count, variant = "icon" }: { count: number; variant?: "ico
   );
 }
 
-const categoryNav = [
-  "Mens",
-  "Womens",
-  "Kids",
-  "Handloom",
-  "GenZ",
-  "Accessories",
-  "Beauty",
-  "Customized",
-] as const;
+const categoryNav = mainNav;
 
 const logoImageBoost = "contrast-[1.14] saturate-[1.06]";
 
@@ -197,7 +189,7 @@ export function Header() {
                 type="button"
                 onClick={() => openAuthDrawer("sign-in")}
                 className="text-[#333] w-11 h-11 inline-flex items-center justify-center rounded-sm hover:bg-flat-layer transition-colors"
-                aria-label="Login / Register"
+                aria-label="Profile"
               >
                 <IconUser />
               </button>
@@ -256,15 +248,6 @@ export function Header() {
               <button
                 type="button"
                 className="relative flex h-10 w-10 items-center justify-center text-[#333] hover:text-[#666] transition-colors"
-                aria-label="Compare"
-              >
-                <IconCompare />
-                <CountBadge count={0} />
-              </button>
-
-              <button
-                type="button"
-                className="relative flex h-10 w-10 items-center justify-center text-[#333] hover:text-[#666] transition-colors"
                 aria-label="Wishlist"
               >
                 <IconHeart />
@@ -277,13 +260,13 @@ export function Header() {
                 className="hidden lg:inline-flex items-center gap-2 text-[#333] hover:text-[#666] transition-colors whitespace-nowrap"
               >
                 <IconUser />
-                <span className="text-[13px] font-normal">Login / Register</span>
+                <span className="text-[13px] font-normal">Profile</span>
               </button>
               <button
                 type="button"
                 onClick={() => openAuthDrawer("sign-in")}
                 className="lg:hidden relative flex h-10 w-10 items-center justify-center text-[#333] hover:text-[#666] transition-colors"
-                aria-label="Login / Register"
+                aria-label="Profile"
               >
                 <IconUser />
               </button>
@@ -312,9 +295,6 @@ export function Header() {
                 </a>
               ))}
             </nav>
-            <p className="hidden lg:block shrink-0 text-[12px] text-[#3d7a99] bg-[#d9edf7] px-4 py-2 rounded-full whitespace-nowrap m-0 font-normal">
-              Free shipping for all orders of <strong className="font-semibold">₹1,300</strong>
-            </p>
           </div>
         </div>
       </div>
