@@ -8,6 +8,12 @@ export type HeroSlide = {
 
 export const heroSlides: HeroSlide[] = [
   {
+    id: "banner-10",
+    imageSrc: "/banner10.jpg",
+    mobileImageSrc: "/banner10.jpg",
+    imageAlt: "Summer vibes — lighter days, bolder you",
+  },
+  {
     id: "banner-1",
     imageSrc: "/banner.png",
     mobileImageSrc: "/mobile_banner/mobilebanner1.jpg",

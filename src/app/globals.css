@@ -121,6 +121,11 @@ h6 {
   border-color: var(--flat-bg);
 }
 
+.newsletter-input,
+.newsletter-submit {
+  border-radius: 0.5rem;
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;

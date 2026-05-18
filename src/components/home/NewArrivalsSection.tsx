@@ -1,6 +1,8 @@
-import { mainCollection } from "@/data/products";
-import { CategoryCard } from "./CategoryCard";
+import { instaImages, mainCollection } from "@/data/products";
+import { CategoryCard, scrollCategoryCardClass } from "./CategoryCard";
 import { HorizontalScrollRow } from "./HorizontalScrollRow";
+
+const INSTA_IMAGE_BASE = "https://woodmart.xtemos.com/wp-content/uploads/2017/04/";
 
 export function NewArrivalsSection() {
   const products = mainCollection.slice(0, 8);
@@ -18,16 +20,17 @@ export function NewArrivalsSection() {
         </div>
 
         <HorizontalScrollRow arrowTop="42%">
-          {products.map((p) => (
+          {products.map((p, i) => (
             <CategoryCard
               key={p.id}
-              className="shrink-0 w-[min(44vw,200px)] sm:w-[220px] md:w-[248px]"
+              imageFill="cover"
+              className={scrollCategoryCardClass}
               item={{
                 slug: p.id,
                 label: p.title,
                 tagline: p.price,
                 href: `/product/${p.id}`,
-                image: p.img1,
+                image: `${INSTA_IMAGE_BASE}${instaImages[i % instaImages.length]}`,
               }}
             />
           ))}

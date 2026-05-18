@@ -1,5 +1,5 @@
 import { mainCollection } from "@/data/products";
-import { CategoryCard } from "./CategoryCard";
+import { CategoryCard, scrollCategoryCardClass } from "./CategoryCard";
 import { HorizontalScrollRow } from "./HorizontalScrollRow";
 
 export function BestsellersSection() {
@@ -21,7 +21,7 @@ export function BestsellersSection() {
           {products.map((p) => (
             <CategoryCard
               key={p.id}
-              className="shrink-0 w-[min(44vw,200px)] sm:w-[220px] md:w-[248px]"
+              className={scrollCategoryCardClass}
               item={{
                 slug: p.id,
                 label: p.title,

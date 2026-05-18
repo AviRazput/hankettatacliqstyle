@@ -6,8 +6,7 @@ import { NewArrivalsSection } from "../components/home/NewArrivalsSection";
 import { FeaturedBrandsSection } from "../components/home/FeaturedBrandsSection";
 import { CreatorMarketplaceSection } from "../components/home/CreatorMarketplaceSection";
 import { BestsellersSection } from "../components/home/BestsellersSection";
-import { SaleBannerSection } from "../components/home/SaleBannerSection";
-import { WhyHanketSection } from "../components/home/WhyHanketSection";
+// import { WhyHanketSection } from "../components/home/WhyHanketSection";
 import { InstagramSection } from "../components/home/InstagramSection";
 import { NewsletterSection } from "../components/home/NewsletterSection";
 
@@ -21,8 +20,7 @@ export default function Home() {
       <FeaturedBrandsSection />
       <CreatorMarketplaceSection />
       <BestsellersSection />
-      <SaleBannerSection />
-      <WhyHanketSection />
+      {/* <WhyHanketSection /> */}
       <InstagramSection />
       <NewsletterSection />
     </SiteLayout>

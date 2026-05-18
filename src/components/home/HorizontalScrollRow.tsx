@@ -24,9 +24,11 @@ const arrowClass =
 export function HorizontalScrollRow({
   children,
   arrowTop = "42%",
+  scrollClassName = "flex gap-2 sm:gap-4 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-1",
 }: {
   children: ReactNode;
   arrowTop?: string;
+  scrollClassName?: string;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -62,14 +64,14 @@ export function HorizontalScrollRow({
     if (!el) return;
     const first = el.firstElementChild as HTMLElement | null;
     const step = first?.offsetWidth ?? 160;
-    el.scrollBy({ left: direction * (step + 20), behavior: "smooth" });
+    el.scrollBy({ left: direction * (step + 12), behavior: "smooth" });
   };
 
   return (
     <div className="relative" style={{ ["--carousel-arrow-top" as string]: arrowTop }}>
       <div
         ref={scrollRef}
-        className="flex gap-5 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-1"
+        className={scrollClassName}
       >
         {children}
       </div>

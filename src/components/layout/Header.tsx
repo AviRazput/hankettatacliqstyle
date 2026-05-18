@@ -60,22 +60,37 @@ function IconHeart() {
   );
 }
 
-function IconCart() {
+function IconCart({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className="w-5 h-5 stroke-current fill-none stroke-2 shrink-0" viewBox="0 0 24 24">
+    <svg
+      className={[className, "stroke-[#333] fill-none stroke-[1.6] shrink-0"].join(" ")}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
       <circle cx="9" cy="21" r="1" />
       <circle cx="20" cy="21" r="1" />
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      <path
+        d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
-function IconBag() {
+function CartLink({ labelClassName }: { labelClassName: string }) {
+  const cartCount = 0;
+
   return (
-    <svg className="w-[18px] h-[18px] stroke-current fill-none stroke-[1.75] shrink-0" viewBox="0 0 24 24" aria-hidden>
-      <path d="M6 7h12l-1 14H7L6 7z" strokeLinejoin="round" />
-      <path d="M9 7V5a3 3 0 0 1 6 0v2" strokeLinecap="round" />
-    </svg>
+    <Link
+      href="/cart"
+      className="relative inline-flex items-center gap-1.5 text-[#333] hover:text-[#666] transition-colors shrink-0"
+      aria-label="Cart"
+    >
+      <IconCart />
+      <span className={labelClassName}>Cart</span>
+      {cartCount > 0 ? <CountBadge count={cartCount} /> : null}
+    </Link>
   );
 }
 
@@ -104,14 +119,9 @@ function IconCompare() {
   );
 }
 
-function CountBadge({ count, variant = "icon" }: { count: number; variant?: "icon" | "cart" }) {
-  if (variant === "cart") {
-    return (
-      <span className="absolute -top-1.5 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-[#f5a623] text-white text-[10px] font-bold leading-none">
-        {count}
-      </span>
-    );
-  }
+function CountBadge({ count }: { count: number }) {
+  if (count <= 0) return null;
+
   return (
     <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full bg-[#f5f5f5] text-[#333] text-[10px] font-semibold leading-none border border-[#e8e8e8]">
       {count}
@@ -128,8 +138,6 @@ export function Header() {
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const cartCount = 0;
-
   const drawerLinks = categoryNav;
   const drawerAccountLinks: { label: string; href?: string; action?: "auth" }[] = [
     { label: "Login / Register", action: "auth" },
@@ -184,7 +192,7 @@ export function Header() {
               />
             </Link>
 
-            <div className="justify-self-end flex items-center gap-1 shrink-0">
+            <div className="justify-self-end flex items-center shrink-0">
               <button
                 type="button"
                 onClick={() => openAuthDrawer("sign-in")}
@@ -193,16 +201,6 @@ export function Header() {
               >
                 <IconUser />
               </button>
-
-              <Link
-                href="/cart"
-                className="relative inline-flex items-center gap-1.5 bg-[#1a1a1a] text-white rounded-full pl-3 pr-3 py-2 hover:bg-[#333] transition-colors"
-                aria-label="Cart"
-              >
-                <IconBag />
-                <span className="text-[11px] font-medium leading-none">₹0.00</span>
-                <CountBadge count={cartCount} variant="cart" />
-              </Link>
             </div>
           </div>
 
@@ -271,15 +269,7 @@ export function Header() {
                 <IconUser />
               </button>
 
-              <Link
-                href="/cart"
-                className="relative inline-flex items-center gap-2.5 bg-[#1a1a1a] text-white rounded-full pl-4 pr-5 py-2.5 hover:bg-[#333] transition-colors shrink-0"
-                aria-label="Cart"
-              >
-                <IconBag />
-                <span className="text-[13px] font-medium leading-none">₹0.00</span>
-                <CountBadge count={cartCount} variant="cart" />
-              </Link>
+              <CartLink labelClassName="text-[13px] font-normal" />
             </div>
           </div>
 

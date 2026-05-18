@@ -1,6 +1,9 @@
+import { instaImages } from "@/data/products";
 import { featuredBrands } from "@/data/homepage";
-import { CategoryCard } from "./CategoryCard";
+import { CategoryCard, scrollCategoryCardClass } from "./CategoryCard";
 import { HorizontalScrollRow } from "./HorizontalScrollRow";
+
+const SHOWCASE_IMAGE_BASE = "https://woodmart.xtemos.com/wp-content/uploads/2017/04/";
 
 export function FeaturedBrandsSection() {
   return (
@@ -16,16 +19,17 @@ export function FeaturedBrandsSection() {
         </div>
 
         <HorizontalScrollRow arrowTop="42%">
-          {featuredBrands.map((brand) => (
+          {featuredBrands.map((brand, i) => (
             <CategoryCard
               key={brand.slug}
-              className="shrink-0 w-[min(44vw,200px)] sm:w-[220px] md:w-[248px]"
+              imageFill="cover"
+              className={scrollCategoryCardClass}
               item={{
                 slug: brand.slug,
                 label: brand.name,
                 tagline: brand.offer,
                 href: `/search?brand=${brand.slug}`,
-                image: brand.image,
+                image: `${SHOWCASE_IMAGE_BASE}${instaImages[i % instaImages.length]}`,
               }}
             />
           ))}

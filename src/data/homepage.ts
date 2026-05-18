@@ -142,19 +142,22 @@ export const creatorServices = [
     slug: "photography",
     title: "Photography",
     description: "Premium product shoots for emerging fashion brands.",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop&q=80",
+    image:
+      "https://woodmart.xtemos.com/wp-content/uploads/2017/03/baner-flat-fashion-500x375.jpg",
   },
   {
     slug: "branding",
     title: "Branding",
     description: "Identity, packaging, and storytelling for your label.",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop&q=80",
+    image:
+      "https://woodmart.xtemos.com/wp-content/uploads/2017/03/baner-flat-fashion-5-500x375.jpg",
   },
   {
     slug: "marketplace-growth",
     title: "Marketplace Growth",
     description: "Listing, SEO, and launch support on Hanket.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
+    image:
+      "https://woodmart.xtemos.com/wp-content/uploads/2017/03/baner-flat-fashion-7-500x375.jpg",
   },
 ] as const;
 
@@ -166,7 +169,64 @@ export const whyHanket = [
   { title: "Curated Collections", description: "Hand-picked edits across men, women, and lifestyle." },
 ] as const;
 
-export const socialTags = ["Reels", "Customer Photos", "Creator Shoots", "Brand Launches"] as const;
+export const socialTags = [
+  "Social",
+  "Reels",
+  "Customer Photos",
+  "Creator Shoots",
+  "Brand Launches",
+] as const;
+
+export const instagramPosts = [
+  {
+    slug: "street-style",
+    title: "Street style edit",
+    image: "fashion-product-3.jpg",
+    href: "/search",
+  },
+  {
+    slug: "creator-shoot",
+    title: "Creator shoot drop",
+    image: "fashion-product-5.jpg",
+    href: "/search",
+  },
+  {
+    slug: "evening-wear",
+    title: "Evening wear picks",
+    image: "fashion-product-6.jpg",
+    href: "/search",
+  },
+  {
+    slug: "hanket-creators",
+    title: "Hanket x Creators",
+    image: "fashion-product-10.jpg",
+    href: "/search",
+  },
+  {
+    slug: "customer-look",
+    title: "Customer style",
+    image: "fashion-product-11.jpg",
+    href: "/search",
+  },
+  {
+    slug: "brand-launch",
+    title: "Brand launch",
+    image: "fashion-product-12.jpg",
+    href: "/search",
+  },
+  {
+    slug: "reels-edit",
+    title: "Reels highlight",
+    image: "fashion-product-3-2-430x491.jpg",
+    href: "/search",
+  },
+  {
+    slug: "shop-the-look",
+    title: "Shop the look",
+    image: "fashion-product-5-2-430x491.jpg",
+    href: "/search",
+  },
+] as const;
 
 export const footerLinks = {
   about: [

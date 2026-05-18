@@ -40,10 +40,25 @@ function IconShop() {
   );
 }
 
+function IconCart() {
+  return (
+    <svg className="w-5 h-5 stroke-current fill-none stroke-[1.6]" viewBox="0 0 24 24" aria-hidden>
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path
+        d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const linkItems = [
   { href: "/", label: "Home", icon: <IconHome />, match: (p: string) => p === "/" },
   { href: "#", label: "Wishlist", icon: <IconWishlist />, match: () => false },
   { href: "/product", label: "Shop", icon: <IconShop />, match: (p: string) => p.startsWith("/product") },
+  { href: "/cart", label: "Cart", icon: <IconCart />, match: (p: string) => p === "/cart" },
 ] as const;
 
 export function MobileBottomNav() {
@@ -52,7 +67,7 @@ export function MobileBottomNav() {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[80] bg-flat-bg/95 backdrop-blur border-t border-flat-border max-w-[100vw] pb-[env(safe-area-inset-bottom)]">
       <div className="max-w-[1500px] mx-auto px-4">
-        <div className="h-16 min-h-[4rem] max-h-[4rem] grid grid-cols-3 items-center shrink-0">
+        <div className="h-16 min-h-[4rem] max-h-[4rem] grid grid-cols-4 items-center shrink-0">
           {linkItems.map((it) => {
             const active = it.match(pathname);
             return (

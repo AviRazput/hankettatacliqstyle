@@ -14,18 +14,20 @@ export function CategoriesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:grid-cols-4 lg:gap-6">
           {homeCategories.map((cat) => (
-            <CategoryCard
-              key={cat.slug}
-              item={{
-                slug: cat.slug,
-                label: cat.label,
-                tagline: cat.tagline,
-                href: cat.href,
-                image: cat.image,
-              }}
-            />
+            <div key={cat.slug} className="min-w-0">
+              <CategoryCard
+                imageFill="cover"
+                size="grid"
+                item={{
+                  slug: cat.slug,
+                  label: cat.label,
+                  href: cat.href,
+                  image: cat.image,
+                }}
+              />
+            </div>
           ))}
         </div>
       </div>
