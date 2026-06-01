@@ -75,14 +75,16 @@ function HeroDots({
   slides,
   active,
   onSelect,
+  invert = false,
 }: {
   slides: typeof heroSlides;
   active: number;
   onSelect: (index: number) => void;
+  invert?: boolean;
 }) {
   return (
     <div
-      className="inline-flex items-center justify-center gap-2.5 bg-transparent"
+      className="inline-flex items-center justify-center gap-1.5 bg-transparent"
       role="tablist"
       aria-label="Hero slides"
     >
@@ -96,20 +98,22 @@ function HeroDots({
             aria-selected={isActive}
             aria-label={`Go to slide ${idx + 1}`}
             onClick={() => onSelect(idx)}
-            className="hero-dots-btn relative flex h-2.5 min-w-[8px] items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#333]/40"
+            className="hero-dots-btn relative flex h-2 min-w-[8px] items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#333]/40"
           >
             <motion.span
               aria-hidden
-              className="block h-2.5 rounded-full"
+              className="block h-2 rounded-full"
               initial={false}
               animate={{
-                width: isActive ? 32 : 8,
-                backgroundColor: isActive ? "#1a1a1a" : "#d4d4d4",
+                width: isActive ? 24 : 8,
+                backgroundColor: isActive
+                  ? invert ? "#ffffff" : "#1a1a1a"
+                  : invert ? "rgba(255,255,255,0.5)" : "#d4d4d4",
                 boxShadow: isActive
                   ? "0 2px 8px rgba(0,0,0,0.18)"
                   : "0 0 0 rgba(0,0,0,0)",
               }}
-              whileHover={!isActive ? { backgroundColor: "#b8b8b8", scale: 1.08 } : undefined}
+              whileHover={!isActive ? { backgroundColor: invert ? "#ffffff" : "#b8b8b8", scale: 1.08 } : undefined}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             />
           </button>
@@ -289,7 +293,7 @@ export function Hero() {
       {/* Mobile */}
       <div className="md:hidden w-full px-4 mt-3">
         <div
-          className="relative w-full overflow-hidden rounded-3xl touch-pan-y h-[56vh] min-h-[280px] max-h-[520px] bg-flat-bg"
+          className="relative w-full overflow-hidden rounded-xl touch-pan-y h-[56vh] min-h-[280px] max-h-[520px] bg-flat-bg"
           style={{ touchAction: "pan-y" }}
         >
           <motion.div
@@ -305,7 +309,7 @@ export function Hero() {
               {slide && mobileSrc ? (
                 <motion.div
                   key={`m-${slide.id}`}
-                  className="absolute inset-0 rounded-3xl overflow-hidden"
+                  className="absolute inset-0 rounded-xl overflow-hidden"
                   custom={interactionSource}
                   variants={slideVariants}
                   initial="initial"
@@ -321,7 +325,7 @@ export function Hero() {
                     fetchPriority={isInitial ? "high" : "auto"}
                     unoptimized
                     sizes="100vw"
-                    className="object-cover object-center pointer-events-none select-none rounded-3xl"
+                    className="object-cover object-center pointer-events-none select-none rounded-xl"
                     style={{ filter: slide.imageFilter }}
                     draggable={false}
                   />
@@ -339,14 +343,14 @@ export function Hero() {
       </div>
 
       {/* Desktop */}
-      <div className="hidden md:block w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <div className="relative group w-full overflow-hidden rounded-3xl bg-flat-bg h-[380px] lg:h-[460px] xl:h-[520px]">
-          <div className="absolute inset-0 rounded-3xl overflow-hidden">
+      <div className="hidden md:block w-full max-w-[1500px] mx-auto px-4 sm:px-5 md:px-6 lg:px-8 mt-4 mb-4">
+        <div className="relative group w-full overflow-hidden rounded-xl bg-flat-bg h-[280px] md:h-[320px] lg:h-[360px] xl:h-[400px]">
+          <div className="absolute inset-0 rounded-xl overflow-hidden">
             <AnimatePresence initial={false} custom={interactionSource}>
               {slide && desktopSrc ? (
               <motion.div
                 key={`d-${slide.id}`}
-                className="absolute inset-0 rounded-3xl overflow-hidden"
+                className="absolute inset-0 rounded-xl overflow-hidden"
                 custom={interactionSource}
                 variants={slideVariants}
                 initial="initial"
@@ -361,8 +365,8 @@ export function Hero() {
                   priority={isInitial}
                   fetchPriority={isInitial ? "high" : "auto"}
                   unoptimized
-                  sizes="(max-width: 1440px) 100vw, 1440px"
-                  className="object-cover object-center rounded-3xl"
+                  sizes="100vw"
+                  className="object-cover object-center rounded-xl"
                   style={{ filter: slide.imageFilter }}
                 />
               </motion.div>
@@ -373,27 +377,25 @@ export function Hero() {
             <>
               <button
                 onClick={goPrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-transparent text-white opacity-0 transition-all group-hover:opacity-100 hover:bg-black/30"
+                className="absolute left-6 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-[0_2px_10px_rgba(0,0,0,0.1)] opacity-100 transition-transform hover:scale-110"
                 aria-label="Previous slide"
               >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}><path d="m15 18-6-6 6-6"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </button>
               <button
                 onClick={goNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-transparent text-white opacity-0 transition-all group-hover:opacity-100 hover:bg-black/30"
+                className="absolute right-6 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black shadow-[0_2px_10px_rgba(0,0,0,0.1)] opacity-100 transition-transform hover:scale-110"
                 aria-label="Next slide"
               >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}><path d="m9 18 6-6-6-6"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </button>
+              
+              <div className="absolute bottom-5 right-6 z-10 flex items-center justify-center bg-black/40 backdrop-blur-sm rounded-full px-3 py-2">
+                <HeroDots slides={slides} active={active} onSelect={goToDot} invert />
+              </div>
             </>
           )}
         </div>
-
-        {slides.length > 1 ? (
-          <div className="flex min-h-[48px] items-center justify-center bg-transparent px-6 py-2.5">
-            <HeroDots slides={slides} active={active} onSelect={goToDot} />
-          </div>
-        ) : null}
       </div>
     </section>
   );

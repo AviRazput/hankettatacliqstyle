@@ -58,11 +58,11 @@ export function InstagramSection() {
   return (
     <section className="w-full bg-white pt-6 pb-0 md:pt-10">
       <div className="relative mb-6 px-12 sm:mb-8 md:mb-10 md:px-16">
-        <h2 className="text-center">
-          <span className="block font-serif text-[2rem] font-normal italic leading-[1.05] tracking-[-0.04em] text-[#1a1a1a] sm:text-[2.75rem] md:text-[3.5rem] lg:text-[4rem]">
-            @hanket.in
+        <h2 className="text-center flex flex-col items-center">
+          <span className="block font-sans text-[1.75rem] font-black leading-none tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-[#1a1a1a] via-[#333] to-flat-pink sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem]">
+            hanket.in
           </span>
-          <span className="mt-2 block font-sans text-[0.7rem] font-light uppercase tracking-[0.35em] text-[#6b6b6b] sm:mt-3 sm:text-[0.8rem] md:text-[0.85rem]">
+          <span className="mt-2 block font-sans text-[0.7rem] font-bold uppercase tracking-[0.4em] text-[#1a1a1a] sm:mt-3 sm:text-[0.75rem]">
             on Instagram
           </span>
         </h2>
